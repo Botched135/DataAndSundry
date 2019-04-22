@@ -9,6 +9,7 @@ public:
     ~BitArray();
     bool &operator[] (uint);
     void SetIndex(uint, bool);
+    void SetAll(bool);
     bool GetIndex(uint);
 private:
     uint m_size;
@@ -19,7 +20,7 @@ BitArray::BitArray(uint size):m_size(size)
 {
     uint elements = (m_size+uint_bits-1)/uint_bits;
     m_array = new uint[elements];
-    for (int i = 0; i < elements; i++)
+    for (uint i = 0; i < elements; i++)
         m_array[i] = 0;
 }
 BitArray::~BitArray()
@@ -40,6 +41,21 @@ void BitArray::SetIndex(uint index, bool value)
     m_array[index / uint_bits] = value ? m_array[index / uint_bits] | bitmask:
                                           m_array[index / uint_bits] & ~bitmask;   
 
+}
+
+void BitArray::SetAll(bool value)
+{
+    if(value)
+    {
+        for (int i = 0; i < m_size; i++)
+            m_array[i] = ~(m_array[i] & 0);
+
+        return;
+    }
+    
+    for (int i = 0; i < m_size; i++)
+        m_array[i] = 0;
+  
 }
 
 bool BitArray::GetIndex(uint index)
